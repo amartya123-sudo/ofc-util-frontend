@@ -20,4 +20,4 @@ TESTING.md
 VERIFICATION_GUIDE.md
 VISUAL_GUIDE.md
 tally_samples/
-server.json
+server.js

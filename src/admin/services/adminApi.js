@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.API_BASE_URL
+const API_BASE_URL = import.meta.env.BACKEND_URL
 
 const adminApi = axios.create({
   baseURL: API_BASE_URL,
