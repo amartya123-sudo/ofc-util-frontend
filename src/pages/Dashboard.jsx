@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { Box, Container, CircularProgress } from "@mui/material";
 import { toast } from "react-toastify";
 
-import Header from "src/components/Header/Header";
-import SalesFilter from "src/components/SalesFilter/SalesFilter";
-import SalesTable from "src/components/SalesTable/SalesTable";
-import AddSaleModal from "src/components/AddSaleModal/AddSaleModal";
+import Header from "../components/Header/Header";
+import SalesFilter from "../components/SalesFilter/SalesFilter";
+import SalesTable from "../components/SalesTable/SalesTable";
+import AddSaleModal from "../components/AddSaleModal/AddSaleModal";
 
-import { salesAPI } from "src/services/api";
+import { salesAPI } from "../services/api";
 
 const Dashboard = () => {
   const [sales, setSales] = useState([]);

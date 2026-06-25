@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { format } from "date-fns";
 
-import { adminItemAPI } from "src/admin/services/adminApi";
+import { adminItemAPI } from "../../admin/services/adminApi";
 
 import "./AddSaleModal.css";
 
