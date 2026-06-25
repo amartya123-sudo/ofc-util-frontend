@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
-  'http://192.168.1.12:8000/api'
+  'https://ofc-util-backend-production.up.railway.app/api'
 
 const adminApi = axios.create({
   baseURL: API_BASE_URL,
