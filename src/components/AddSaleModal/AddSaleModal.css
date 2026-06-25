@@ -1,0 +1,49 @@
+.sale-table {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sale-row {
+  display: grid;
+
+  grid-template-columns:
+    2fr
+    1fr
+    1fr
+    1.3fr
+    auto;
+
+  gap: 16px;
+
+  align-items: center;
+
+  background: #fafafa;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 14px;
+
+  padding: 20px;
+
+  transition: 0.3s;
+}
+
+.sale-row:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.add-item-btn {
+  width: 180px;
+  align-self: flex-start;
+}
+
+@media (max-width: 900px) {
+  .sale-row {
+    grid-template-columns: 1fr;
+  }
+
+  .add-item-btn {
+    width: 100%;
+  }
+}
