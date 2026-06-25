@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { adminAuthAPI } from "../services/adminAPI.js";
+import { adminAuthAPI } from "../services/adminApi";
 import "./AdminLogin.css";
 
 export default function AdminLogin() {
