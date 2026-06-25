@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.BACKEND_URL
+const API_BASE_URL = import.meta.env.BACKEND_URL || 'https://ofc-util-backend-production.up.railway.app/api'
 
 const adminApi = axios.create({
   baseURL: API_BASE_URL,
