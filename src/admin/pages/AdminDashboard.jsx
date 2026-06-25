@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CreateFirmModal from "../components/CreateFirmModal";
-import { adminFirmAPI } from "../services/adminApi";
+import CreateFirmModal from "src/admin/components/CreateFirmModal";
+import { adminFirmAPI } from "src/admin/services/adminApi";
 import "./AdminDashboard.css";
 
 export default function AdminDashboard() {

@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
-import { getErrorMessage } from '../services/api'
+import { getErrorMessage } from 'src/services/api'
 
 /**
  * Custom hook for async API calls

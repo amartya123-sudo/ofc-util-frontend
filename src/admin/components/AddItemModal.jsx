@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { adminItemAPI } from "../services/adminApi";
+import { adminItemAPI } from "src/admin/services/adminAPI.js";
 
 import "./AddItemModal.css";
 

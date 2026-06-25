@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { adminFirmAPI } from "../services/adminApi";
+import { adminFirmAPI } from "src/admin/services/adminAPI.js";
 
 import "./CreateFirmModal.css";
 

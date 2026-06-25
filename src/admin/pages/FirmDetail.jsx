@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { adminFirmAPI } from "../services/adminApi";
+import { adminFirmAPI } from "src/admin/services/adminApi";
 import * as XLSX from "xlsx";
 import "./FirmDetail.css";
 

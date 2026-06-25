@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { adminItemAPI } from "../services/adminApi";
-import AddItemModal from "../components/AddItemModal";
+import { adminItemAPI } from "src/admin/services/adminApi";
+import AddItemModal from "src/admin/components/AddItemModal";
 import "./ItemMaster.css";
 
 export default function ItemMaster() {

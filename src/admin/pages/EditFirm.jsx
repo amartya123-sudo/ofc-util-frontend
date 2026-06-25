@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import AdminLayout from "../components/AdminLayout";
-import { adminFirmAPI } from "../services/adminApi";
+import AdminLayout from "src/admin/components/AdminLayout";
+import { adminFirmAPI } from "src/admin/services/adminApi";
 
 import "./EditFirm.css";
 

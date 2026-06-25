@@ -6,15 +6,15 @@ import {
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import ProtectedRoute from "./routes/ProtectedRoute";
-import AdminLogin from "./admin/pages/AdminLogin";
-import AdminDashboard from "./admin/pages/AdminDashboard";
-import AdminProtectedRoute from "./admin/routes/AdminProtectedRoutes";
-import EditFirm from "./admin/pages/EditFirm";
-import FirmDetail from "./admin/pages/FirmDetail";
-import ItemMaster from "./admin/pages/ItemMaster";
+import Login from "src/pages/Login";
+import Dashboard from "src/pages/Dashboard";
+import ProtectedRoute from "src/routes/ProtectedRoute";
+import AdminLogin from "src/admin/pages/AdminLogin";
+import AdminDashboard from "src/admin/pages/AdminDashboard";
+import AdminProtectedRoute from "src/admin/routes/AdminProtectedRoutes";
+import EditFirm from "src/admin/pages/EditFirm";
+import FirmDetail from "src/admin/pages/FirmDetail";
+import ItemMaster from "src/admin/pages/ItemMaster";
 
 function App() {
   return (

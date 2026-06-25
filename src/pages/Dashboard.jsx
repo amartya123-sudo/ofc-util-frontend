@@ -1,120 +1,13 @@
-// import { useState, useEffect } from 'react'
-// import { Box, Container, CircularProgress } from '@mui/material'
-// import { toast } from 'react-toastify'
-// import Header from '../components/Header/Header'
-// import SummaryCards from '../components/SummaryCards/SummaryCards'
-// import SalesFilter from '../components/SalesFilter/SalesFilter'
-// import SalesTable from '../components/SalesTable/SalesTable'
-// import AddSaleModal from '../components/AddSaleModal/AddSaleModal'
-// import { salesAPI } from '../services/api'
-
-// const Dashboard = () => {
-//   const [sales, setSales] = useState([])
-//   const [loading, setLoading] = useState(true)
-//   const [searchTerm, setSearchTerm] = useState('')
-//   const [openModal, setOpenModal] = useState(false)
-//   const [submitLoading, setSubmitLoading] = useState(false)
-//   const [submitError, setSubmitError] = useState('')
-
-//   // Fetch sales data
-//   useEffect(() => {
-//     fetchSales()
-//   }, [])
-
-//   const fetchSales = async () => {
-//     try {
-//       setLoading(true)
-//       const response = await salesAPI.fetchAll()
-//       // Extract sales array from response - API returns { sales: [...], summary: {...} }
-//       setSales(response.data?.sales || [])
-//     } catch (err) {
-//       toast.error('Failed to fetch sales data')
-//       console.error(err)
-//       setSales([])
-//     } finally {
-//       setLoading(false)
-//     }
-//   }
-
-//   const handleAddSaleClick = () => {
-//     setOpenModal(true)
-//   }
-
-//   const handleAddSaleSubmit = async (saleData) => {
-//     try {
-//       setSubmitLoading(true)
-//       setSubmitError('')
-//       const response = await salesAPI.add(saleData)
-
-//       if (response.data.success) {
-//         toast.success('Sale Added Successfully')
-//         setOpenModal(false)
-//         fetchSales()
-//       } else {
-//         setSubmitError(response.data.message || 'Failed to add sale')
-//         toast.error(response.data.message || 'Failed to add sale')
-//       }
-//     } catch (err) {
-//       const errorMsg = err.response?.data?.message || 'Failed to add sale'
-//       setSubmitError(errorMsg)
-//       toast.error(errorMsg)
-//     } finally {
-//       setSubmitLoading(false)
-//     }
-//   }
-
-//   const handleCloseModal = () => {
-//     setOpenModal(false)
-//     setSubmitError('')
-//   }
-
-//   return (
-//     <Box sx={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
-//       <Header onAddSaleClick={handleAddSaleClick} />
-
-//       <Container maxWidth="lg" sx={{ py: 3 }}>
-//         {loading ? (
-//           <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
-//             <CircularProgress />
-//           </Box>
-//         ) : (
-//           <>
-//             <SummaryCards sales={sales} loading={loading} />
-
-//             <SalesFilter searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-
-//             <SalesTable
-//               sales={sales}
-//               loading={loading}
-//               searchTerm={searchTerm}
-//             />
-//           </>
-//         )}
-//       </Container>
-
-//       <AddSaleModal
-//         open={openModal}
-//         onClose={handleCloseModal}
-//         onSubmit={handleAddSaleSubmit}
-//         loading={submitLoading}
-//         error={submitError}
-//       />
-//     </Box>
-//   )
-// }
-
-// export default Dashboard
 import { useEffect, useState } from "react";
 import { Box, Container, CircularProgress } from "@mui/material";
 import { toast } from "react-toastify";
 
-import Header from "../components/Header/Header";
-import SummaryCards from "../components/SummaryCards/SummaryCards";
-import SalesFilter from "../components/SalesFilter/SalesFilter";
-import SalesTable from "../components/SalesTable/SalesTable";
-import AddSaleModal from "../components/AddSaleModal/AddSaleModal";
+import Header from "src/components/Header/Header";
+import SalesFilter from "src/components/SalesFilter/SalesFilter";
+import SalesTable from "src/components/SalesTable/SalesTable";
+import AddSaleModal from "src/components/AddSaleModal/AddSaleModal";
 
-import { salesAPI } from "../services/api";
+import { salesAPI } from "src/services/api";
 
 const Dashboard = () => {
   const [sales, setSales] = useState([]);
@@ -235,7 +128,6 @@ const Dashboard = () => {
           </Box>
         ) : (
           <>
-            <SummaryCards summary={summary} />
 
             <SalesFilter
               searchTerm={searchTerm}

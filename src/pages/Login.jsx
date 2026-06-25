@@ -11,7 +11,7 @@ import {
 import { useForm, Controller } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { firmAPI } from '../services/api'
+import { firmAPI } from 'src/services/api'
 import { toast } from 'react-toastify'
 
 const Login = () => {
