@@ -1,7 +1,7 @@
 .sale-table {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .sale-row {
@@ -18,19 +18,23 @@
 
   align-items: center;
 
-  background: #fafafa;
+  background: var(--surface, #fbf8f1);
 
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--rule, #ddd2bd);
+  border-left: 3px solid var(--navy, #1f3a5f);
 
-  border-radius: 14px;
+  border-radius: var(--radius, 3px);
 
-  padding: 20px;
+  padding: 18px;
 
-  transition: 0.3s;
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .sale-row:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-color: var(--rule-strong, #c8baa0);
+  box-shadow: var(--shadow-raised, 0 6px 22px rgba(42, 38, 32, 0.12));
 }
 
 .add-item-btn {

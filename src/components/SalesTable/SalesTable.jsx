@@ -49,19 +49,23 @@ const SalesTable = ({ sales, loading, searchTerm }) => {
           alignItems: "center",
           justifyContent: "center",
           py: 6,
-          backgroundColor: "#fff",
-          borderRadius: "8px",
-          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+          backgroundColor: "var(--surface)",
+          borderRadius: "var(--radius)",
+          border: "1px solid var(--rule)",
+          boxShadow: "var(--shadow)",
         }}
       >
-        <InboxIcon sx={{ fontSize: 48, color: "#ccc", mb: 2 }} />
-        <Typography variant="h6" sx={{ color: "#666" }}>
-          {searchTerm ? "No sales records found" : "No sales records found"}
+        <InboxIcon sx={{ fontSize: 48, color: "var(--rule-strong)", mb: 2 }} />
+        <Typography
+          variant="h6"
+          sx={{ color: "var(--ink-soft)", fontFamily: "var(--serif)" }}
+        >
+          The register is empty
         </Typography>
-        <Typography variant="body2" sx={{ color: "#999", mt: 1 }}>
+        <Typography variant="body2" sx={{ color: "var(--ink-muted)", mt: 1 }}>
           {searchTerm
-            ? "Try adjusting your search filters"
-            : 'Click "+ Add Sale" to get started'}
+            ? "No entries match your search"
+            : 'Use "Add Sale" to record the first entry'}
         </Typography>
       </Box>
     );
@@ -71,46 +75,47 @@ const SalesTable = ({ sales, loading, searchTerm }) => {
     <TableContainer
       component={Paper}
       sx={{
-        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-        borderRadius: "8px",
+        border: "1px solid var(--rule-strong)",
+        boxShadow: "var(--shadow)",
+        borderRadius: "var(--radius)",
         overflow: "auto",
       }}
     >
       <Table sx={{ minWidth: 650 }}>
         <TableHead>
-          <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
-            <TableCell sx={{ fontWeight: 600 }}>Date</TableCell>
-            <TableCell sx={{ fontWeight: 600 }}>Item Name</TableCell>
-            <TableCell align="right" sx={{ fontWeight: 600 }}>
-              Qty
-            </TableCell>
-            <TableCell align="right" sx={{ fontWeight: 600 }}>
-              Rate
-            </TableCell>
-            <TableCell align="right" sx={{ fontWeight: 600 }}>
-              Taxable Amount
-            </TableCell>
-            <TableCell align="right" sx={{ fontWeight: 600 }}>
-              CGST
-            </TableCell>
-            <TableCell align="right" sx={{ fontWeight: 600 }}>
-              SGST
-            </TableCell>
-            <TableCell align="right" sx={{ fontWeight: 600 }}>
-              Total Amount
-            </TableCell>
+          <TableRow>
+            <TableCell>Date</TableCell>
+            <TableCell>Item Name</TableCell>
+            <TableCell align="right">Qty</TableCell>
+            <TableCell align="right">Rate</TableCell>
+            <TableCell align="right">Taxable Amount</TableCell>
+            <TableCell align="right">CGST</TableCell>
+            <TableCell align="right">SGST</TableCell>
+            <TableCell align="right">Total Amount</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {filteredSales.map((sale) =>
             (sale.items || []).map((item, index) => (
-              <TableRow key={item.id}>
+              <TableRow
+                key={item.id}
+                sx={{
+                  "&:nth-of-type(even)": {
+                    backgroundColor: "rgba(31, 58, 95, 0.025)",
+                  },
+                  "&:hover": { backgroundColor: "rgba(31, 58, 95, 0.06)" },
+                }}
+              >
                 {index === 0 && (
                   <TableCell
                     rowSpan={sale.items.length}
                     sx={{
                       verticalAlign: "top",
-                      fontWeight: 600,
+                      fontWeight: 700,
+                      fontFamily: "var(--serif)",
+                      color: "var(--navy)",
+                      borderRight: "1px solid var(--rule)",
+                      whiteSpace: "nowrap",
                     }}
                   >
                     {format(new Date(sale.sale_date), "dd/MM/yyyy")}
@@ -119,30 +124,31 @@ const SalesTable = ({ sales, loading, searchTerm }) => {
 
                 <TableCell>{item.item_name}</TableCell>
 
-                <TableCell align="right">
+                <TableCell align="right" className="num">
                   {Number(item.qty).toFixed(2)}
                 </TableCell>
 
-                <TableCell align="right">
+                <TableCell align="right" className="num">
                   ₹{Number(item.rate).toFixed(2)}
                 </TableCell>
 
-                <TableCell align="right">
+                <TableCell align="right" className="num">
                   ₹{Number(item.taxable_amount).toFixed(2)}
                 </TableCell>
 
-                <TableCell align="right">
+                <TableCell align="right" className="num">
                   ₹{Number(item.cgst_amount).toFixed(2)}
                 </TableCell>
 
-                <TableCell align="right">
+                <TableCell align="right" className="num">
                   ₹{Number(item.sgst_amount).toFixed(2)}
                 </TableCell>
 
                 <TableCell
                   align="right"
+                  className="num"
                   sx={{
-                    color: "#1976d2",
+                    color: "var(--navy)",
                     fontWeight: 700,
                   }}
                 >

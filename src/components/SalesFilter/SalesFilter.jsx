@@ -1,12 +1,12 @@
-import { TextField, Box, InputAdornment } from '@mui/material'
-import SearchIcon from '@mui/icons-material/Search'
+import { TextField, Box, InputAdornment } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 const SalesFilter = ({ searchTerm, onSearchChange }) => {
   return (
     <Box sx={{ mb: 3 }}>
       <TextField
         fullWidth
-        placeholder="Search sales..."
+        placeholder="Search the register by item or date…"
         value={searchTerm}
         onChange={(e) => onSearchChange(e.target.value)}
         variant="outlined"
@@ -14,22 +14,19 @@ const SalesFilter = ({ searchTerm, onSearchChange }) => {
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <SearchIcon sx={{ color: '#999' }} />
+              <SearchIcon sx={{ color: "var(--ink-muted)" }} />
             </InputAdornment>
           ),
         }}
         sx={{
-          backgroundColor: '#fff',
-          borderRadius: '8px',
-          '& .MuiOutlinedInput-root': {
-            '&:hover fieldset': {
-              borderColor: '#1976d2',
-            },
+          maxWidth: 420,
+          "& .MuiOutlinedInput-root": {
+            backgroundColor: "var(--surface)",
           },
         }}
       />
     </Box>
-  )
-}
+  );
+};
 
-export default SalesFilter
+export default SalesFilter;

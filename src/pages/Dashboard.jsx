@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Container, CircularProgress } from "@mui/material";
+import { Box, Container, CircularProgress, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 
 import Header from "../components/Header/Header";
@@ -37,7 +37,7 @@ const Dashboard = () => {
       setLoading(true);
 
       const response = await salesAPI.fetchAll();
-      console.log("Response:",response)
+      console.log("Response:", response);
 
       setSales(response.data.sales || []);
 
@@ -105,7 +105,7 @@ const Dashboard = () => {
     <Box
       sx={{
         minHeight: "100vh",
-        backgroundColor: "#f5f7fb",
+        backgroundColor: "transparent",
       }}
     >
       <Header onAddSaleClick={handleAddSaleClick} />
@@ -113,7 +113,7 @@ const Dashboard = () => {
       <Container
         maxWidth="xl"
         sx={{
-          py: 3,
+          py: 4,
         }}
       >
         {loading ? (
@@ -128,6 +128,28 @@ const Dashboard = () => {
           </Box>
         ) : (
           <>
+            <Box sx={{ mb: 3 }}>
+              <Typography
+                variant="h4"
+                sx={{ fontFamily: "var(--serif)", color: "var(--ink)" }}
+              >
+                Daily Sales Register
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ color: "var(--ink-muted)", mt: 0.5 }}
+              >
+                A complete account of recorded transactions
+              </Typography>
+              <Box
+                sx={{
+                  height: "2px",
+                  background:
+                    "linear-gradient(90deg, var(--navy), transparent)",
+                  mt: 1.5,
+                }}
+              />
+            </Box>
 
             <SalesFilter
               searchTerm={searchTerm}
