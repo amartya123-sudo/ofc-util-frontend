@@ -42,32 +42,64 @@ const SalesTable = ({ sales, loading, searchTerm }) => {
 
   if (filteredSales.length === 0) {
     return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          py: 6,
-          backgroundColor: "var(--surface)",
-          borderRadius: "var(--radius)",
-          border: "1px solid var(--rule)",
-          boxShadow: "var(--shadow)",
-        }}
-      >
-        <InboxIcon sx={{ fontSize: 48, color: "var(--rule-strong)", mb: 2 }} />
-        <Typography
-          variant="h6"
-          sx={{ color: "var(--ink-soft)", fontFamily: "var(--serif)" }}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            py: 8,
+            backgroundColor: "var(--surface)",
+            borderRadius: "var(--radius-lg)",
+            border: "2px dashed var(--rule-strong)",
+            boxShadow: "var(--shadow)",
+            transition: "all var(--transition-base)",
+          }}
         >
-          The register is empty
-        </Typography>
-        <Typography variant="body2" sx={{ color: "var(--ink-muted)", mt: 1 }}>
-          {searchTerm
-            ? "No entries match your search"
-            : 'Use "Add Sale" to record the first entry'}
-        </Typography>
-      </Box>
+          <Box
+            sx={{
+              width: 80,
+              height: 80,
+              backgroundColor: "var(--navy-soft)",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              mb: 3,
+              transition: "all var(--transition-base)",
+              "&:hover": {
+                transform: "scale(1.1)",
+              },
+            }}
+          >
+            <InboxIcon sx={{ fontSize: 40, color: "var(--navy)" }} />
+          </Box>
+          <Typography
+            variant="h5"
+            sx={{ 
+              color: "var(--ink-soft)", 
+              fontFamily: "var(--serif)",
+              fontWeight: 700,
+              mb: 1,
+            }}
+          >
+            The register is empty
+          </Typography>
+          <Typography 
+            variant="body1" 
+            sx={{ 
+              color: "var(--ink-muted)", 
+              mt: 0.5,
+              maxWidth: 400,
+              textAlign: "center",
+              lineHeight: 1.6,
+            }}
+          >
+            {searchTerm
+              ? "No entries match your search. Try adjusting your search terms."
+              : 'Click "Add Sale" to record your first transaction'}
+          </Typography>
+        </Box>
     );
   }
 
@@ -76,14 +108,28 @@ const SalesTable = ({ sales, loading, searchTerm }) => {
       component={Paper}
       sx={{
         border: "1px solid var(--rule-strong)",
-        boxShadow: "var(--shadow)",
-        borderRadius: "var(--radius)",
-        overflow: "auto",
+        boxShadow: "var(--shadow-raised)",
+        borderRadius: "var(--radius-lg)",
+        overflow: "hidden",
+        backgroundColor: "var(--surface)",
+        transition: "all var(--transition-base)",
       }}
     >
       <Table sx={{ minWidth: 650 }}>
         <TableHead>
-          <TableRow>
+          <TableRow
+            sx={{
+              backgroundColor: "var(--surface-alt)",
+              "& th": {
+                fontFamily: "var(--serif)",
+                fontWeight: 700,
+                color: "var(--ink)",
+                borderBottom: "2px solid var(--navy)",
+                py: 2.5,
+                px: 2,
+              },
+            }}
+          >
             <TableCell>Date</TableCell>
             <TableCell>Item Name</TableCell>
             <TableCell align="right">Qty</TableCell>
@@ -101,9 +147,17 @@ const SalesTable = ({ sales, loading, searchTerm }) => {
                 key={item.id}
                 sx={{
                   "&:nth-of-type(even)": {
-                    backgroundColor: "rgba(31, 58, 95, 0.025)",
+                    backgroundColor: "rgba(31, 58, 95, 0.03)",
                   },
-                  "&:hover": { backgroundColor: "rgba(31, 58, 95, 0.06)" },
+                  "&:hover": { 
+                    backgroundColor: "var(--navy-soft)",
+                    transform: "scale(1.005)",
+                  },
+                  transition: "all var(--transition-fast)",
+                  "& td": {
+                    py: 2,
+                    px: 2,
+                  },
                 }}
               >
                 {index === 0 && (
@@ -114,15 +168,18 @@ const SalesTable = ({ sales, loading, searchTerm }) => {
                       fontWeight: 700,
                       fontFamily: "var(--serif)",
                       color: "var(--navy)",
-                      borderRight: "1px solid var(--rule)",
+                      borderRight: "2px solid var(--rule)",
                       whiteSpace: "nowrap",
+                      backgroundColor: "rgba(31, 58, 95, 0.02)",
+                      py: 2,
+                      px: 2,
                     }}
                   >
                     {format(new Date(sale.sale_date), "dd/MM/yyyy")}
                   </TableCell>
                 )}
 
-                <TableCell>{item.item_name}</TableCell>
+                <TableCell sx={{ fontWeight: 500 }}>{item.item_name}</TableCell>
 
                 <TableCell align="right" className="num">
                   {Number(item.qty).toFixed(2)}
@@ -150,6 +207,7 @@ const SalesTable = ({ sales, loading, searchTerm }) => {
                   sx={{
                     color: "var(--navy)",
                     fontWeight: 700,
+                    fontSize: "1.05rem",
                   }}
                 >
                   ₹{Number(item.amount).toFixed(2)}

@@ -113,7 +113,8 @@ const Dashboard = () => {
       <Container
         maxWidth="xl"
         sx={{
-          py: 4,
+          py: 5,
+          px: { xs: 2, md: 4 },
         }}
       >
         {loading ? (
@@ -121,42 +122,87 @@ const Dashboard = () => {
             sx={{
               display: "flex",
               justifyContent: "center",
-              py: 8,
+              alignItems: "center",
+              flexDirection: "column",
+              py: 12,
+              gap: 3,
             }}
           >
-            <CircularProgress />
+            <Box
+              sx={{
+                width: 60,
+                height: 60,
+                border: `4px solid var(--rule)`,
+                borderTop: `4px solid var(--navy)`,
+                borderRadius: "50%",
+                animation: "spin 1s linear infinite",
+                "@keyframes spin": {
+                  "0%": { transform: "rotate(0deg)" },
+                  "100%": { transform: "rotate(360deg)" },
+                },
+              }}
+            />
+            <Typography
+              variant="body1"
+              sx={{
+                color: "var(--ink-muted)",
+                fontFamily: "var(--serif)",
+                fontSize: "1.1rem",
+              }}
+            >
+              Loading the ledger...
+            </Typography>
           </Box>
         ) : (
           <>
-            <Box sx={{ mb: 3 }}>
+            <Box 
+              sx={{ 
+                mb: 4,
+                animation: "fadeIn 0.5s ease-out",
+              }}
+            >
               <Typography
-                variant="h4"
-                sx={{ fontFamily: "var(--serif)", color: "var(--ink)" }}
+                variant="h3"
+                sx={{ 
+                  fontFamily: "var(--serif)", 
+                  color: "var(--ink)",
+                  fontSize: { xs: "1.75rem", md: "2.25rem" },
+                  mb: 1,
+                }}
               >
                 Daily Sales Register
               </Typography>
               <Typography
-                variant="body2"
-                sx={{ color: "var(--ink-muted)", mt: 0.5 }}
+                variant="body1"
+                sx={{ 
+                  color: "var(--ink-muted)", 
+                  mt: 0.5,
+                  fontSize: "1rem",
+                  maxWidth: 600,
+                }}
               >
-                A complete account of recorded transactions
+                A complete account of recorded transactions for your firm
               </Typography>
               <Box
                 sx={{
-                  height: "2px",
-                  background:
-                    "linear-gradient(90deg, var(--navy), transparent)",
-                  mt: 1.5,
+                  height: "3px",
+                  background: "linear-gradient(90deg, var(--navy) 0%, transparent 60%)",
+                  mt: 2,
+                  borderRadius: "2px",
                 }}
               />
             </Box>
 
-            <SalesFilter
-              searchTerm={searchTerm}
-              onSearchChange={setSearchTerm}
-            />
+            <Box sx={{ mb: 3 }}>
+              <SalesFilter
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+              />
+            </Box>
 
-            <SalesTable sales={filteredSales} />
+            <Box sx={{ animation: "fadeIn 0.6s ease-out" }}>
+              <SalesTable sales={filteredSales} />
+            </Box>
           </>
         )}
       </Container>

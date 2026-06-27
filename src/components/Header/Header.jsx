@@ -30,6 +30,8 @@ const Header = ({ onAddSaleClick }) => {
         backgroundColor: "var(--surface)",
         color: "var(--ink)",
         borderBottom: "2px solid var(--navy)",
+        boxShadow: "var(--shadow-elevated)",
+        transition: "all var(--transition-base)",
       }}
     >
       <Toolbar
@@ -37,37 +39,84 @@ const Header = ({ onAddSaleClick }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "8px 16px",
+          padding: "12px 24px",
+          minHeight: "72px",
         }}
       >
-        <Box>
-          <Typography
-            variant="h6"
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          <Box
             sx={{
-              fontFamily: "var(--serif)",
-              fontWeight: 700,
-              color: "var(--navy)",
-              lineHeight: 1.2,
+              width: "42px",
+              height: "42px",
+              backgroundColor: "var(--navy)",
+              borderRadius: "var(--radius)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "var(--shadow)",
             }}
           >
-            {firm.name || "Sales Register"}
-          </Typography>
-          <Typography
-            variant="caption"
-            sx={{
-              color: "var(--ink-muted)",
-              letterSpacing: "1px",
-              textTransform: "uppercase",
-              fontSize: "0.68rem",
-            }}
-          >
-            {firm.firm_code
-              ? `Firm Code · ${firm.firm_code}`
-              : "Daily Sales Ledger"}
-          </Typography>
+            <Typography
+              sx={{
+                fontFamily: "var(--serif)",
+                fontWeight: 700,
+                color: "#fbf8f1",
+                fontSize: "20px",
+              }}
+            >
+              S
+            </Typography>
+          </Box>
+          <Box>
+            <Typography
+              variant="h6"
+              sx={{
+                fontFamily: "var(--serif)",
+                fontWeight: 700,
+                color: "var(--navy)",
+                lineHeight: 1.2,
+                fontSize: "1.35rem",
+              }}
+            >
+              {firm.name || "Sales Register"}
+            </Typography>
+            <Typography
+              variant="caption"
+              sx={{
+                color: "var(--ink-muted)",
+                letterSpacing: "1px",
+                textTransform: "uppercase",
+                fontSize: "0.65rem",
+                display: "flex",
+                alignItems: "center",
+                gap: 0.5,
+              }}
+            >
+              {firm.firm_code && (
+                <Box
+                  sx={{
+                    width: "6px",
+                    height: "6px",
+                    backgroundColor: "var(--navy)",
+                    borderRadius: "50%",
+                    display: "inline-block",
+                  }}
+                />
+              )}
+              {firm.firm_code
+                ? `Firm Code · ${firm.firm_code}`
+                : "Daily Sales Ledger"}
+            </Typography>
+          </Box>
         </Box>
 
-        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+        <Box sx={{ display: "flex", gap: 1.5, alignItems: "center" }}>
           {isMobile ? (
             <>
               <IconButton
@@ -75,15 +124,27 @@ const Header = ({ onAddSaleClick }) => {
                 sx={{
                   backgroundColor: "var(--navy)",
                   color: "#fbf8f1",
-                  borderRadius: "2px",
-                  "&:hover": { backgroundColor: "var(--navy-dark)" },
+                  borderRadius: "var(--radius)",
+                  "&:hover": { 
+                    backgroundColor: "var(--navy-dark)",
+                    transform: "translateY(-2px)",
+                    boxShadow: "var(--shadow-raised)",
+                  },
+                  transition: "all var(--transition-fast)",
                 }}
               >
                 <AddIcon />
               </IconButton>
               <IconButton
                 onClick={handleLogout}
-                sx={{ color: "var(--ink-soft)" }}
+                sx={{ 
+                  color: "var(--ink-soft)",
+                  "&:hover": { 
+                    color: "var(--danger)",
+                    backgroundColor: "var(--danger-soft)",
+                  },
+                  transition: "all var(--transition-fast)",
+                }}
               >
                 <LogoutIcon />
               </IconButton>
@@ -95,6 +156,19 @@ const Header = ({ onAddSaleClick }) => {
                 color="primary"
                 startIcon={<AddIcon />}
                 onClick={onAddSaleClick}
+                sx={{
+                  backgroundColor: "var(--navy)",
+                  "&:hover": {
+                    backgroundColor: "var(--navy-dark)",
+                    transform: "translateY(-2px)",
+                    boxShadow: "var(--shadow-raised)",
+                  },
+                  transition: "all var(--transition-fast)",
+                  borderRadius: "var(--radius)",
+                  textTransform: "none",
+                  fontWeight: 600,
+                  px: 2,
+                }}
               >
                 Add Sale
               </Button>
@@ -103,6 +177,21 @@ const Header = ({ onAddSaleClick }) => {
                 color="primary"
                 startIcon={<LogoutIcon />}
                 onClick={handleLogout}
+                sx={{
+                  color: "var(--ink-soft)",
+                  borderColor: "var(--rule-strong)",
+                  "&:hover": {
+                    color: "var(--danger)",
+                    borderColor: "var(--danger)",
+                    backgroundColor: "var(--danger-soft)",
+                    transform: "translateY(-2px)",
+                  },
+                  transition: "all var(--transition-fast)",
+                  borderRadius: "var(--radius)",
+                  textTransform: "none",
+                  fontWeight: 600,
+                  px: 2,
+                }}
               >
                 Logout
               </Button>
