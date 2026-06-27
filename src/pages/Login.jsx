@@ -63,67 +63,137 @@ const Login = () => {
         justifyContent: "center",
         background:
           "radial-gradient(circle at 50% 0%, #f7f1e6 0%, #ece2cf 100%)",
-        padding: 2,
+        padding: 3,
+        position: "relative",
+        overflow: "hidden",
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: `
+            linear-gradient(rgba(31, 58, 95, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(31, 58, 95, 0.03) 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
+          pointerEvents: "none",
+        },
       }}
     >
       <Container maxWidth="xs">
         <Card
           sx={{
-            padding: 4,
+            padding: 5,
             borderRadius: "var(--radius-lg)",
             border: "1px solid var(--rule-strong)",
-            boxShadow: "0 10px 40px rgba(42, 38, 32, 0.14)",
+            boxShadow: "var(--shadow-elevated)",
             backgroundColor: "var(--surface)",
             position: "relative",
+            overflow: "visible",
             "&::before": {
               content: '""',
               position: "absolute",
-              inset: "8px",
+              inset: "6px",
               border: "1px solid var(--rule)",
-              borderRadius: "2px",
+              borderRadius: "var(--radius)",
               pointerEvents: "none",
             },
+            animation: "fadeIn 0.6s ease-out",
           }}
         >
-          <Box sx={{ textAlign: "center", mb: 3, position: "relative" }}>
+          {/* Decorative seal */}
+          <Box
+            sx={{
+              position: "absolute",
+              top: -24,
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: 64,
+              height: 64,
+              backgroundColor: "var(--navy)",
+              borderRadius: "50%",
+              border: "4px solid var(--surface)",
+              boxShadow: "var(--shadow-raised)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 1,
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: "var(--serif)",
+                fontWeight: 700,
+                color: "#fbf8f1",
+                fontSize: "28px",
+              }}
+            >
+              S
+            </Typography>
+          </Box>
+
+          <Box sx={{ textAlign: "center", mb: 4, mt: 2, position: "relative" }}>
             <Typography
               variant="overline"
               sx={{
                 color: "var(--ink-muted)",
                 letterSpacing: "3px",
                 fontWeight: 600,
+                textTransform: "uppercase",
+                fontSize: "0.75rem",
               }}
             >
               Est. Ledger
             </Typography>
             <Typography
-              variant="h4"
+              variant="h3"
               sx={{
                 fontFamily: "var(--serif)",
                 fontWeight: 700,
                 color: "var(--ink)",
-                mt: 0.5,
-                mb: 1,
+                mt: 1,
+                mb: 1.5,
+                fontSize: { xs: "1.75rem", sm: "2rem" },
               }}
             >
               Sales Register
             </Typography>
             <Box
               sx={{
-                width: 56,
-                height: "2px",
+                width: 64,
+                height: "3px",
                 backgroundColor: "var(--navy)",
                 mx: "auto",
-                mb: 1.5,
+                mb: 2,
+                borderRadius: "2px",
               }}
             />
-            <Typography variant="body2" sx={{ color: "var(--ink-muted)" }}>
-              Enter your firm code to open the books
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                color: "var(--ink-muted)",
+                lineHeight: 1.6,
+                maxWidth: 320,
+                mx: "auto",
+              }}
+            >
+              Enter your firm code to access the books
             </Typography>
           </Box>
 
           {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
+            <Alert 
+              severity="error" 
+              sx={{ 
+                mb: 3,
+                borderRadius: "var(--radius)",
+                border: "1px solid var(--danger)",
+                backgroundColor: "var(--danger-soft)",
+                animation: "fadeIn 0.3s ease-out",
+              }}
+            >
               {error}
             </Alert>
           )}
@@ -144,12 +214,30 @@ const Login = () => {
                   {...field}
                   fullWidth
                   label="Firm Code"
-                  placeholder="Enter Firm Code"
+                  placeholder="Enter your unique firm code"
                   variant="outlined"
                   disabled={loading}
                   error={!!errors.firm_code}
                   helperText={errors.firm_code?.message}
-                  sx={{ mb: 3 }}
+                  sx={{ 
+                    mb: 3,
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "var(--radius-lg)",
+                      transition: "all var(--transition-fast)",
+                      "&:hover": {
+                        boxShadow: "var(--shadow)",
+                      },
+                      "&.Mui-focused": {
+                        boxShadow: "var(--shadow-raised)",
+                      },
+                    },
+                  }}
+                  InputLabelProps={{
+                    sx: {
+                      color: "var(--ink-muted)",
+                      fontFamily: "var(--serif)",
+                    }
+                  }}
                 />
               )}
             />
@@ -162,15 +250,54 @@ const Login = () => {
               disabled={loading}
               sx={{
                 fontWeight: 600,
-                padding: "11px",
-                letterSpacing: "0.5px",
+                padding: "14px",
+                letterSpacing: "0.8px",
+                textTransform: "none",
+                fontSize: "1rem",
+                backgroundColor: "var(--navy)",
+                borderRadius: "var(--radius-lg)",
+                boxShadow: loading ? "none" : "var(--shadow-raised)",
+                transition: "all var(--transition-fast)",
+                "&:hover": {
+                  backgroundColor: "var(--navy-dark)",
+                  transform: loading ? "none" : "translateY(-2px)",
+                  boxShadow: "var(--shadow-elevated)",
+                },
+                "&:disabled": {
+                  opacity: 0.7,
+                },
               }}
             >
-              {loading ? <CircularProgress size={24} /> : "Enter the Register"}
+              {loading ? (
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                  <CircularProgress size={20} sx={{ color: "#fbf8f1" }} />
+                  <span>Accessing...</span>
+                </Box>
+              ) : (
+                "Enter the Register"
+              )}
             </Button>
           </form>
 
-          <Box sx={{ mt: 3, textAlign: "center", position: "relative" }}>
+          <Box 
+            sx={{ 
+              mt: 4, 
+              textAlign: "center", 
+              position: "relative",
+              pt: 3,
+              borderTop: "1px solid var(--rule)",
+            }}
+          >
+            <Typography
+              variant="caption"
+              sx={{
+                color: "var(--ink-muted)",
+                fontSize: "0.75rem",
+                letterSpacing: "0.5px",
+              }}
+            >
+              Secure • Private • Encrypted
+            </Typography>
           </Box>
         </Card>
       </Container>
