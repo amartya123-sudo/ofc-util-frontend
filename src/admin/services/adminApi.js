@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.BACKEND_URL || 'https://ofc-util-backend-production.up.railway.app/api'
-// const API_BASE_URL = import.meta.env.BACKEND_URL || 'http://192.168.1.12:8000/api'
+// const API_BASE_URL = import.meta.env.BACKEND_URL || 'https://ofc-util-backend-production.up.railway.app/api'
+const API_BASE_URL = import.meta.env.BACKEND_URL || 'http://192.168.1.12:8000/api'
 
 const adminApi = axios.create({
   baseURL: API_BASE_URL,
@@ -60,12 +60,30 @@ export const adminFirmAPI = {
   createFirm: (data) =>
     adminApi.post('/admin/firms/', data),
 
-  updateFirm: (id, data) =>
-    adminApi.put(
-      `/admin/firms/${id}/`,
-      data
-    ),
+  updateFirm(id, data) {
+    return adminApi.put(`/admin/firms/${id}/`, data);
+  },
+
+  deleteFirm(id) {
+    return adminApi.delete(`/admin/firms/${id}/`);
+  },
 }
+
+export const adminSaleAPI = {
+
+  getEditRequests() {
+    return adminApi.get("/admin/edit-requests/");
+  },
+
+  approveEdit(id) {
+    return adminApi.post(`/admin/edit-requests/${id}/approve/`);
+  },
+
+  rejectEdit(id) {
+    return adminApi.post(`/admin/edit-requests/${id}/reject/`);
+  },
+
+};
 
 export const adminItemAPI = {
 

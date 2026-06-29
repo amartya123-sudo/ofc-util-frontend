@@ -1,6 +1,7 @@
 ```
 # Dependencies
 node_modules/
+tally_samples
 
 # Environment
 .env
@@ -16,11 +17,12 @@ node_modules/
 *.swp
 *.swo
 *.tmp
-
+.gitignore
 # Build artifacts
 dist/
 build/
 target/
+
 
 # Python
 __pycache__/

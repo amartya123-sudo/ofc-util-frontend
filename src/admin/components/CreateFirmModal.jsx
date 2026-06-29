@@ -1,16 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { adminFirmAPI } from "../services/adminApi.js";
 
 import "./CreateFirmModal.css";
 
-export default function CreateFirmModal({ open, onClose, onSuccess }) {
+export default function CreateFirmModal({
+  open,
+  onClose,
+  onSuccess,
+  editData,
+  isEdit,
+}) {
   const [loading, setLoading] = useState(false);
-
   const [formData, setFormData] = useState({
     firm_name: "",
     gst_number: "",
     address: "",
   });
+
+  useEffect(() => {
+    if (!open) return;
+
+    if (editData) {
+      setFormData({
+        firm_name: editData.firm_name,
+        gst_number: editData.gst_number,
+        address: editData.address,
+      });
+    } else {
+      setFormData({
+        firm_name: "",
+        gst_number: "",
+        address: "",
+      });
+    }
+  }, [open, editData]);
 
   if (!open) {
     return null;
@@ -29,7 +52,11 @@ export default function CreateFirmModal({ open, onClose, onSuccess }) {
     try {
       setLoading(true);
 
-      await adminFirmAPI.createFirm(formData);
+      if (isEdit) {
+        await adminFirmAPI.updateFirm(editData.id, formData);
+      } else {
+        await adminFirmAPI.createFirm(formData);
+      }
 
       setFormData({
         firm_name: "",
@@ -50,7 +77,7 @@ export default function CreateFirmModal({ open, onClose, onSuccess }) {
     <div className="modal-overlay">
       <div className="modal-card">
         <div className="modal-header">
-          <h2>Create Firm</h2>
+          <h2>{isEdit ? "Edit Firm" : "Create Firm"}</h2>
 
           <button className="close-btn" onClick={onClose}>
             x
@@ -91,7 +118,13 @@ export default function CreateFirmModal({ open, onClose, onSuccess }) {
             </button>
 
             <button type="submit" className="save-btn">
-              {loading ? "Creating..." : "Create Firm"}
+              {loading
+                ? isEdit
+                  ? "Updating..."
+                  : "Creating..."
+                : isEdit
+                  ? "Update Firm"
+                  : "Create Firm"}
             </button>
           </div>
         </form>

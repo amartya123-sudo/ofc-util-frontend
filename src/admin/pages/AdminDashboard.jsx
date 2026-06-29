@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateFirmModal from "../components/CreateFirmModal";
-import { adminFirmAPI } from "../services/adminApi";
+import { adminFirmAPI, adminSaleAPI } from "../services/adminApi";
 import "./AdminDashboard.css";
 
 export default function AdminDashboard() {
@@ -9,37 +9,19 @@ export default function AdminDashboard() {
 
   const [firms, setFirms] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editRequests, setEditRequests] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-  const [formData, setFormData] = useState({
-    firm_name: "",
-    gst_number: "",
-    address: "",
-  });
-  const [creating, setCreating] = useState(false);
+  const [selectedFirm, setSelectedFirm] = useState(null);
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
-    fetchFirms();
+    loadFirms();
+    loadEditRequests();
   }, []);
 
-  const fetchFirms = async () => {
-    try {
-      const response = await adminFirmAPI.getFirms();
-      console.log("Firms API:", response.data);
-      setFirms(response.data);
-    } catch (error) {
-      console.log("Dashboard Error:", error.response?.data);
-      console.log("Status:", error.response?.status);
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
   const loadFirms = async () => {
     try {
       const response = await adminFirmAPI.getFirms();
-
-      console.log("FIRMS RESPONSE:", response.data);
-
       setFirms(response.data);
     } catch (error) {
       console.error(error);
@@ -48,33 +30,72 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleCreateFirm = async (e) => {
-    e.preventDefault();
+  const loadEditRequests = async () => {
+    try {
+      const res = await adminSaleAPI.getEditRequests();
+      console.log(res.data);
+      setEditRequests(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleCreate = () => {
+    setSelectedFirm(null);
+    setIsEdit(false);
+    setOpenModal(true);
+  };
+
+  const approveRequest = async (id) => {
+    try {
+      await adminSaleAPI.approveEdit(id);
+      loadEditRequests();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const rejectRequest = async (id) => {
+    try {
+      await adminSaleAPI.rejectEdit(id);
+      loadEditRequests();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleEdit = (firm, e) => {
+    e.stopPropagation();
+
+    setSelectedFirm(firm);
+    setIsEdit(true);
+    setOpenModal(true);
+  };
+
+  const handleDelete = async (firm, e) => {
+    e.stopPropagation();
+
+    const confirmed = window.confirm(`Delete "${firm.firm_name}"?`);
+
+    if (!confirmed) return;
 
     try {
-      setCreating(true);
-
-      await adminFirmAPI.createFirm(formData);
-
-      setOpenModal(false);
-
-      setFormData({
-        firm_name: "",
-        gst_number: "",
-        address: "",
-      });
-
+      await adminFirmAPI.deleteFirm(firm.id);
       loadFirms();
     } catch (error) {
       console.error(error);
-    } finally {
-      setCreating(false);
+      alert("Unable to delete firm.");
     }
+  };
+
+  const handleClose = () => {
+    setOpenModal(false);
+    setSelectedFirm(null);
+    setIsEdit(false);
   };
 
   const handleLogout = () => {
     localStorage.removeItem("admin_access");
-
     navigate("/admin/login");
   };
 
@@ -83,7 +104,6 @@ export default function AdminDashboard() {
       <div className="admin-header">
         <div className="admin-header-left">
           <h1>Firm Management</h1>
-
           <p>Manage firms and monitor sales</p>
         </div>
 
@@ -94,10 +114,8 @@ export default function AdminDashboard() {
           >
             Item Master
           </button>
-          <button
-            className="admin-btn admin-btn-create"
-            onClick={() => setOpenModal(true)}
-          >
+
+          <button className="admin-btn admin-btn-create" onClick={handleCreate}>
             + Create Firm
           </button>
 
@@ -106,7 +124,33 @@ export default function AdminDashboard() {
           </button>
         </div>
       </div>
+      <div className="request-card">
+        <h2>Pending Edit Requests</h2>
 
+        {editRequests.length === 0 ? (
+          <p>No pending requests.</p>
+        ) : (
+          editRequests.map((request) => (
+            <div key={request.id} className="request-row">
+              <div>
+                <strong>{request.firm_name}</strong>
+
+                <div>{request.sale_date}</div>
+              </div>
+
+              <div>
+                <button onClick={() => approveRequest(request.id)}>
+                  Approve
+                </button>
+
+                <button onClick={() => rejectRequest(request.id)}>
+                  Reject
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
       {loading ? (
         <div className="loading-box">Loading Firms...</div>
       ) : (
@@ -116,7 +160,7 @@ export default function AdminDashboard() {
           {firms.length === 0 ? (
             <div
               style={{
-                padding: "30px",
+                padding: 30,
                 textAlign: "center",
               }}
             >
@@ -133,18 +177,48 @@ export default function AdminDashboard() {
                   <h3>{firm.firm_name}</h3>
 
                   <div className="admin-firm-code">{firm.firm_code}</div>
+
+                  <small>{firm.gst_number}</small>
                 </div>
 
-                <div className="admin-arrow">→</div>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    alignItems: "center",
+                  }}
+                >
+                  <button
+                    className="admin-btn"
+                    onClick={(e) => handleEdit(firm, e)}
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    className="admin-btn admin-btn-logout"
+                    onClick={(e) => handleDelete(firm, e)}
+                  >
+                    Delete
+                  </button>
+
+                  <span className="admin-arrow">→</span>
+                </div>
               </div>
             ))
           )}
         </div>
       )}
+
       <CreateFirmModal
         open={openModal}
-        onClose={() => setOpenModal(false)}
-        onSuccess={fetchFirms}
+        onClose={() => {
+          setOpenModal(false);
+          setSelectedFirm(null);
+        }}
+        onSuccess={loadFirms}
+        editData={selectedFirm}
+        isEdit={isEdit}
       />
     </div>
   );

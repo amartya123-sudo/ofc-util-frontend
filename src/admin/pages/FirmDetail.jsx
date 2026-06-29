@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { adminFirmAPI } from "../services/adminApi";
+import { adminFirmAPI, adminItemAPI } from "../services/adminApi";
 import * as XLSX from "xlsx";
 import "./FirmDetail.css";
 
@@ -26,6 +26,9 @@ export default function FirmDetail() {
   const [selectedYear, setSelectedYear] = useState("All");
 
   const [selectedQuarter, setSelectedQuarter] = useState("All");
+
+  const [items, setItems] = useState([]);
+
   const months = [
     "January",
     "February",
@@ -49,6 +52,7 @@ export default function FirmDetail() {
 
   useEffect(() => {
     loadFirm();
+    loadItems();
   }, []);
 
   const getFinancialQuarter = (dateString) => {
@@ -67,6 +71,15 @@ export default function FirmDetail() {
     }
 
     return "Q4";
+  };
+
+  const loadItems = async () => {
+    try {
+      const response = await adminItemAPI.getItems();
+      setItems(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const exportToExcel = () => {
@@ -160,13 +173,17 @@ export default function FirmDetail() {
 
     const matchesSearch =
       search === "" ||
-      sale.items?.some((itemRow) =>
-        itemRow.item?.item_name?.toLowerCase().includes(searchText),
+      sale.items.some((itemRow) =>
+        itemRow.item_name.toLowerCase().includes(searchText),
       );
+
+    const matchesItem =
+      itemFilter === "All" ||
+      sale.items.some((itemRow) => itemRow.item_name === itemFilter);
 
     const saleDate = new Date(sale.sale_date);
 
-    const saleMonth = saleDate.getMonth();
+    const saleMonth = saleDate.getMonth() + 1;
 
     const saleYear = saleDate.getFullYear();
 
@@ -181,7 +198,13 @@ export default function FirmDetail() {
     const matchesQuarter =
       selectedQuarter === "All" || saleQuarter === selectedQuarter;
 
-    return matchesSearch && matchesMonth && matchesYear && matchesQuarter;
+    return (
+      matchesSearch &&
+      matchesItem &&
+      matchesMonth &&
+      matchesYear &&
+      matchesQuarter
+    );
   });
 
   const groupedSales = Object.entries(
@@ -202,7 +225,7 @@ export default function FirmDetail() {
         <div>
           <h1>{data.firm.firm_name}</h1>
 
-          <p>Firm Sales Dashboard</p>
+          <p>Sales Dashboard</p>
         </div>
 
         <div className="nav-actions">
@@ -264,7 +287,7 @@ export default function FirmDetail() {
             <option value="All">All Months</option>
 
             {months.map((month, index) => (
-              <option key={month} value={index}>
+              <option key={month} value={index+1}>
                 {month}
               </option>
             ))}
@@ -302,9 +325,11 @@ export default function FirmDetail() {
           >
             <option value="All">All Items</option>
 
-            <option value="A">Item A</option>
-
-            <option value="B">Item B</option>
+            {items.map((item) => (
+              <option key={item.id} value={item.item_name}>
+                {item.item_name}
+              </option>
+            ))}
           </select>
           <button
             className="clear-btn"

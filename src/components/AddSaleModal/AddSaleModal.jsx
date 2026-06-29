@@ -29,8 +29,11 @@ export default function AddSaleModal({
   onSubmit,
   loading,
   error,
+  editSale = null,
 }) {
   const [items, setItems] = useState([]);
+
+  const isEdit = editSale !== null;
 
   const [rows, setRows] = useState([
     {
@@ -52,10 +55,36 @@ export default function AddSaleModal({
   });
 
   useEffect(() => {
-    if (open) {
-      loadItems();
+    if (!open) return;
+
+    loadItems();
+
+    if (editSale) {
+      reset({
+        sale_date: editSale.sale_date,
+      });
+
+      setRows(
+        editSale.items.map((item) => ({
+          item: item.item,
+          qty: item.qty,
+          rate: item.rate,
+        })),
+      );
+    } else {
+      reset({
+        sale_date: format(new Date(), "yyyy-MM-dd"),
+      });
+
+      setRows([
+        {
+          item: "",
+          qty: "",
+          rate: "",
+        },
+      ]);
     }
-  }, [open]);
+  }, [open, editSale]);
 
   const loadItems = async () => {
     try {
@@ -117,7 +146,7 @@ export default function AddSaleModal({
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
-      <DialogTitle>Add Daily Sale</DialogTitle>
+      <DialogTitle>{isEdit ? "Edit Sale" : "Add Daily Sale"}</DialogTitle>
 
       <DialogContent>
         {error && (
@@ -215,7 +244,13 @@ export default function AddSaleModal({
           disabled={loading}
           onClick={handleSubmit(handleFormSubmit)}
         >
-          {loading ? <CircularProgress size={20} /> : "Save Sale"}
+          {loading ? (
+            <CircularProgress size={20} />
+          ) : isEdit ? (
+            "Update Sale"
+          ) : (
+            "Save Sale"
+          )}
         </Button>
       </DialogActions>
     </Dialog>

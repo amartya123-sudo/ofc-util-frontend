@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.BACKEND_URL || 'https://ofc-util-backend-production.up.railway.app/api'
-// const API_BASE_URL = import.meta.env.BACKEND_URL || 'http://192.168.1.12:8000/api'
+// const API_BASE_URL = import.meta.env.BACKEND_URL || 'https://ofc-util-backend-production.up.railway.app/api'
+const API_BASE_URL = import.meta.env.BACKEND_URL || 'http://192.168.1.12:8000/api'
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -83,7 +83,7 @@ export const salesAPI = {
   fetchAll: (filters = {}) => {
 
     return apiClient.get(
-      '/sales',
+      '/sales/',
       {
         params: filters,
       }
@@ -104,7 +104,7 @@ export const salesAPI = {
     }
 
     return apiClient.get(
-      '/sales',
+      '/sales/',
       {
         params,
       }
@@ -118,7 +118,7 @@ export const salesAPI = {
   search: (searchText) => {
 
     return apiClient.get(
-      '/sales',
+      '/sales/',
       {
         params: {
           search: searchText,
@@ -157,7 +157,7 @@ export const salesAPI = {
     */
 
     return apiClient.post(
-      '/sales',
+      '/sales/',
       saleData
     )
 
@@ -184,6 +184,14 @@ export const salesAPI = {
       `/sales/${saleId}`
     )
 
+  },
+
+  requestEdit(saleId) {
+    return apiClient.post(`/sales/${saleId}/request-edit/`);
+  },
+
+  update(saleId, saleData) {
+    return apiClient.put(`/sales/${saleId}/`, saleData);
   },
 
 }

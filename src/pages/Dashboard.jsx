@@ -22,6 +22,8 @@ const Dashboard = () => {
 
   const [submitError, setSubmitError] = useState("");
 
+  const [editSale, setEditSale] = useState(null);
+
   const [summary, setSummary] = useState({
     total_amount: 0,
     total_qty: 0,
@@ -60,36 +62,53 @@ const Dashboard = () => {
   };
 
   const handleAddSaleClick = () => {
+    setEditSale(null);
     setOpenModal(true);
   };
 
+  const handleEditSale = (sale) => {
+    setEditSale(sale);
+    setOpenModal(true);
+  };
+
+  const handleRequestEdit = async (saleId) => {
+    try {
+      await salesAPI.requestEdit(saleId);
+
+      toast.success("Edit request sent");
+
+      fetchSales();
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Unable to request edit");
+    }
+  };
   const handleCloseModal = () => {
     setOpenModal(false);
 
     setSubmitError("");
   };
 
-  const handleAddSaleSubmit = async (saleData) => {
+  const handleSaleSubmit = async (data) => {
     try {
       setSubmitLoading(true);
 
-      setSubmitError("");
+      if (editSale) {
+        await salesAPI.update(editSale.id, data);
 
-      const response = await salesAPI.add(saleData);
+        toast.success("Sale updated");
+      } else {
+        await salesAPI.add(data);
 
-      if (response.data.success) {
-        toast.success("Sale added successfully");
-
-        setOpenModal(false);
-
-        fetchSales();
+        toast.success("Sale added");
       }
+
+      fetchSales();
+
+      setOpenModal(false);
+
+      setEditSale(null);
     } catch (error) {
-      const message = error.response?.data?.message || "Failed to add sale";
-
-      setSubmitError(message);
-
-      toast.error(message);
+      toast.error(error.response?.data?.message);
     } finally {
       setSubmitLoading(false);
     }
@@ -155,16 +174,16 @@ const Dashboard = () => {
           </Box>
         ) : (
           <>
-            <Box 
-              sx={{ 
+            <Box
+              sx={{
                 mb: 4,
                 animation: "fadeIn 0.5s ease-out",
               }}
             >
               <Typography
                 variant="h3"
-                sx={{ 
-                  fontFamily: "var(--serif)", 
+                sx={{
+                  fontFamily: "var(--serif)",
                   color: "var(--ink)",
                   fontSize: { xs: "1.75rem", md: "2.25rem" },
                   mb: 1,
@@ -174,8 +193,8 @@ const Dashboard = () => {
               </Typography>
               <Typography
                 variant="body1"
-                sx={{ 
-                  color: "var(--ink-muted)", 
+                sx={{
+                  color: "var(--ink-muted)",
                   mt: 0.5,
                   fontSize: "1rem",
                   maxWidth: 600,
@@ -186,7 +205,8 @@ const Dashboard = () => {
               <Box
                 sx={{
                   height: "3px",
-                  background: "linear-gradient(90deg, var(--navy) 0%, transparent 60%)",
+                  background:
+                    "linear-gradient(90deg, var(--navy) 0%, transparent 60%)",
                   mt: 2,
                   borderRadius: "2px",
                 }}
@@ -201,7 +221,13 @@ const Dashboard = () => {
             </Box>
 
             <Box sx={{ animation: "fadeIn 0.6s ease-out" }}>
-              <SalesTable sales={filteredSales} />
+              <SalesTable
+                sales={filteredSales}
+                loading={loading}
+                searchTerm={searchTerm}
+                onEdit={handleEditSale}
+                onRequestEdit={handleRequestEdit}
+              />
             </Box>
           </>
         )}
@@ -210,9 +236,10 @@ const Dashboard = () => {
       <AddSaleModal
         open={openModal}
         onClose={handleCloseModal}
-        onSubmit={handleAddSaleSubmit}
+        onSubmit={handleSaleSubmit}
         loading={submitLoading}
         error={submitError}
+        editSale={editSale}
       />
     </Box>
   );

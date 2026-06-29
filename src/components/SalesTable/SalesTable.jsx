@@ -9,11 +9,12 @@ import {
   CircularProgress,
   Box,
   Typography,
+  Button,
 } from "@mui/material";
 import InboxIcon from "@mui/icons-material/Inbox";
 import { format } from "date-fns";
 
-const SalesTable = ({ sales, loading, searchTerm }) => {
+const SalesTable = ({ sales, loading, searchTerm, onEdit, onRequestEdit }) => {
   const filteredSales = sales.filter((sale) => {
     const searchLower = (searchTerm || "").toLowerCase();
 
@@ -42,64 +43,64 @@ const SalesTable = ({ sales, loading, searchTerm }) => {
 
   if (filteredSales.length === 0) {
     return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          py: 8,
+          backgroundColor: "var(--surface)",
+          borderRadius: "var(--radius-lg)",
+          border: "2px dashed var(--rule-strong)",
+          boxShadow: "var(--shadow)",
+          transition: "all var(--transition-base)",
+        }}
+      >
         <Box
           sx={{
+            width: 80,
+            height: 80,
+            backgroundColor: "var(--navy-soft)",
+            borderRadius: "50%",
             display: "flex",
-            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            py: 8,
-            backgroundColor: "var(--surface)",
-            borderRadius: "var(--radius-lg)",
-            border: "2px dashed var(--rule-strong)",
-            boxShadow: "var(--shadow)",
+            mb: 3,
             transition: "all var(--transition-base)",
+            "&:hover": {
+              transform: "scale(1.1)",
+            },
           }}
         >
-          <Box
-            sx={{
-              width: 80,
-              height: 80,
-              backgroundColor: "var(--navy-soft)",
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              mb: 3,
-              transition: "all var(--transition-base)",
-              "&:hover": {
-                transform: "scale(1.1)",
-              },
-            }}
-          >
-            <InboxIcon sx={{ fontSize: 40, color: "var(--navy)" }} />
-          </Box>
-          <Typography
-            variant="h5"
-            sx={{ 
-              color: "var(--ink-soft)", 
-              fontFamily: "var(--serif)",
-              fontWeight: 700,
-              mb: 1,
-            }}
-          >
-            The register is empty
-          </Typography>
-          <Typography 
-            variant="body1" 
-            sx={{ 
-              color: "var(--ink-muted)", 
-              mt: 0.5,
-              maxWidth: 400,
-              textAlign: "center",
-              lineHeight: 1.6,
-            }}
-          >
-            {searchTerm
-              ? "No entries match your search. Try adjusting your search terms."
-              : 'Click "Add Sale" to record your first transaction'}
-          </Typography>
+          <InboxIcon sx={{ fontSize: 40, color: "var(--navy)" }} />
         </Box>
+        <Typography
+          variant="h5"
+          sx={{
+            color: "var(--ink-soft)",
+            fontFamily: "var(--serif)",
+            fontWeight: 700,
+            mb: 1,
+          }}
+        >
+          The register is empty
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            color: "var(--ink-muted)",
+            mt: 0.5,
+            maxWidth: 400,
+            textAlign: "center",
+            lineHeight: 1.6,
+          }}
+        >
+          {searchTerm
+            ? "No entries match your search. Try adjusting your search terms."
+            : 'Click "Add Sale" to record your first transaction'}
+        </Typography>
+      </Box>
     );
   }
 
@@ -138,6 +139,7 @@ const SalesTable = ({ sales, loading, searchTerm }) => {
             <TableCell align="right">CGST</TableCell>
             <TableCell align="right">SGST</TableCell>
             <TableCell align="right">Total Amount</TableCell>
+            <TableCell align="center">Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -149,7 +151,7 @@ const SalesTable = ({ sales, loading, searchTerm }) => {
                   "&:nth-of-type(even)": {
                     backgroundColor: "rgba(31, 58, 95, 0.03)",
                   },
-                  "&:hover": { 
+                  "&:hover": {
                     backgroundColor: "var(--navy-soft)",
                     transform: "scale(1.005)",
                   },
@@ -211,6 +213,32 @@ const SalesTable = ({ sales, loading, searchTerm }) => {
                   }}
                 >
                   ₹{Number(item.amount).toFixed(2)}
+                </TableCell>
+                <TableCell align="center">
+                  {index === 0 &&
+                    (sale.can_edit ? (
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        onClick={() => onEdit(sale)}
+                      >
+                        Edit
+                      </Button>
+                    ) : sale.edit_request_pending ? (
+                      <Button size="small" disabled variant="outlined">
+                        Pending
+                      </Button>
+                    ) : (
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        color="warning"
+                        onClick={() => onRequestEdit(sale.id)}
+                      >
+                        Request Edit
+                      </Button>
+                    ))}
                 </TableCell>
               </TableRow>
             )),

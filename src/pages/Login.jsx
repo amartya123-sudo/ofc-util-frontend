@@ -170,9 +170,9 @@ const Login = () => {
                 borderRadius: "2px",
               }}
             />
-            <Typography 
-              variant="body1" 
-              sx={{ 
+            <Typography
+              variant="body1"
+              sx={{
                 color: "var(--ink-muted)",
                 lineHeight: 1.6,
                 maxWidth: 320,
@@ -184,9 +184,9 @@ const Login = () => {
           </Box>
 
           {error && (
-            <Alert 
-              severity="error" 
-              sx={{ 
+            <Alert
+              severity="error"
+              sx={{
                 mb: 3,
                 borderRadius: "var(--radius)",
                 border: "1px solid var(--danger)",
@@ -219,7 +219,7 @@ const Login = () => {
                   disabled={loading}
                   error={!!errors.firm_code}
                   helperText={errors.firm_code?.message}
-                  sx={{ 
+                  sx={{
                     mb: 3,
                     "& .MuiOutlinedInput-root": {
                       borderRadius: "var(--radius-lg)",
@@ -236,7 +236,7 @@ const Login = () => {
                     sx: {
                       color: "var(--ink-muted)",
                       fontFamily: "var(--serif)",
-                    }
+                    },
                   }}
                 />
               )}
@@ -279,10 +279,10 @@ const Login = () => {
             </Button>
           </form>
 
-          <Box 
-            sx={{ 
-              mt: 4, 
-              textAlign: "center", 
+          <Box
+            sx={{
+              mt: 4,
+              textAlign: "center",
               position: "relative",
               pt: 3,
               borderTop: "1px solid var(--rule)",
