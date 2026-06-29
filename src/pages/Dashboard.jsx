@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
-import { Box, Container, CircularProgress, Typography } from "@mui/material";
+import { Box, Container, CircularProgress, Typography, Grid, Paper } from "@mui/material";
 import { toast } from "react-toastify";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 import Header from "../components/Header/Header";
 import SalesFilter from "../components/SalesFilter/SalesFilter";
@@ -212,6 +215,204 @@ const Dashboard = () => {
                 }}
               />
             </Box>
+
+            {/* Summary Cards */}
+            <Grid container spacing={3} sx={{ mb: 4 }}>
+              <Grid item xs={12} sm={4}>
+                <Paper
+                  sx={{
+                    p: 3,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2,
+                    backgroundColor: "var(--surface)",
+                    border: "1px solid var(--rule-strong)",
+                    borderRadius: "var(--radius-lg)",
+                    boxShadow: "var(--shadow)",
+                    transition: "all var(--transition-fast)",
+                    "&:hover": {
+                      boxShadow: "var(--shadow-raised)",
+                      transform: "translateY(-4px)",
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: 56,
+                      height: 56,
+                      borderRadius: "var(--radius)",
+                      backgroundColor: "var(--navy-soft)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <ReceiptLongIcon
+                      sx={{
+                        fontSize: 28,
+                        color: "var(--navy)",
+                      }}
+                    />
+                  </Box>
+                  <Box>
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: "var(--ink-muted)",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.8px",
+                        fontWeight: 600,
+                        fontSize: "0.7rem",
+                      }}
+                    >
+                      Total Entries
+                    </Typography>
+                    <Typography
+                      variant="h4"
+                      sx={{
+                        fontFamily: "var(--num)",
+                        color: "var(--navy)",
+                        fontSize: "1.75rem",
+                        fontWeight: 700,
+                      }}
+                    >
+                      {summary.total_entries}
+                    </Typography>
+                  </Box>
+                </Paper>
+              </Grid>
+
+              <Grid item xs={12} sm={4}>
+                <Paper
+                  sx={{
+                    p: 3,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2,
+                    backgroundColor: "var(--surface)",
+                    border: "1px solid var(--rule-strong)",
+                    borderRadius: "var(--radius-lg)",
+                    boxShadow: "var(--shadow)",
+                    transition: "all var(--transition-fast)",
+                    "&:hover": {
+                      boxShadow: "var(--shadow-raised)",
+                      transform: "translateY(-4px)",
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: 56,
+                      height: 56,
+                      borderRadius: "var(--radius)",
+                      backgroundColor: "var(--success-soft)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <InventoryIcon
+                      sx={{
+                        fontSize: 28,
+                        color: "var(--success)",
+                      }}
+                    />
+                  </Box>
+                  <Box>
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: "var(--ink-muted)",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.8px",
+                        fontWeight: 600,
+                        fontSize: "0.7rem",
+                      }}
+                    >
+                      Total Quantity
+                    </Typography>
+                    <Typography
+                      variant="h4"
+                      sx={{
+                        fontFamily: "var(--num)",
+                        color: "var(--success)",
+                        fontSize: "1.75rem",
+                        fontWeight: 700,
+                      }}
+                    >
+                      {Number(summary.total_qty).toFixed(2)}
+                    </Typography>
+                  </Box>
+                </Paper>
+              </Grid>
+
+              <Grid item xs={12} sm={4}>
+                <Paper
+                  sx={{
+                    p: 3,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2,
+                    backgroundColor: "var(--surface)",
+                    border: "1px solid var(--rule-strong)",
+                    borderRadius: "var(--radius-lg)",
+                    boxShadow: "var(--shadow)",
+                    transition: "all var(--transition-fast)",
+                    "&:hover": {
+                      boxShadow: "var(--shadow-raised)",
+                      transform: "translateY(-4px)",
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: 56,
+                      height: 56,
+                      borderRadius: "var(--radius)",
+                      backgroundColor: "var(--warning-soft)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <TrendingUpIcon
+                      sx={{
+                        fontSize: 28,
+                        color: "var(--warning)",
+                      }}
+                    />
+                  </Box>
+                  <Box>
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: "var(--ink-muted)",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.8px",
+                        fontWeight: 600,
+                        fontSize: "0.7rem",
+                      }}
+                    >
+                      Total Amount
+                    </Typography>
+                    <Typography
+                      variant="h4"
+                      sx={{
+                        fontFamily: "var(--num)",
+                        color: "var(--warning)",
+                        fontSize: "1.75rem",
+                        fontWeight: 700,
+                      }}
+                    >
+                      ₹{Number(summary.total_amount).toFixed(2)}
+                    </Typography>
+                  </Box>
+                </Paper>
+              </Grid>
+            </Grid>
 
             <Box sx={{ mb: 3 }}>
               <SalesFilter

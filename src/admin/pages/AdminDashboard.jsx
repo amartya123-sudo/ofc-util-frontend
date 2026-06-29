@@ -104,7 +104,7 @@ export default function AdminDashboard() {
       <div className="admin-header">
         <div className="admin-header-left">
           <h1>Firm Management</h1>
-          <p>Manage firms and monitor sales</p>
+          <p>Manage firms, monitor sales, and approve edit requests</p>
         </div>
 
         <div className="admin-header-right">
@@ -124,38 +124,59 @@ export default function AdminDashboard() {
           </button>
         </div>
       </div>
+      
+      {/* Edit Requests Section */}
       <div className="request-card">
-        <h2>Pending Edit Requests</h2>
+        <div className="request-header">
+          <h2>Pending Edit Requests</h2>
+          {editRequests.length > 0 && (
+            <span className="request-badge">{editRequests.length}</span>
+          )}
+        </div>
 
         {editRequests.length === 0 ? (
-          <p>No pending requests.</p>
+          <div className="empty-state">
+            <div className="empty-icon">✓</div>
+            <p>No pending requests.</p>
+            <span>All caught up!</span>
+          </div>
         ) : (
-          editRequests.map((request) => (
-            <div key={request.id} className="request-row">
-              <div>
-                <strong>{request.firm_name}</strong>
+          <div className="requests-list">
+            {editRequests.map((request) => (
+              <div key={request.id} className="request-row">
+                <div className="request-info">
+                  <strong>{request.firm_name}</strong>
+                  <div className="request-date">{request.sale_date}</div>
+                </div>
 
-                <div>{request.sale_date}</div>
+                <div className="request-actions">
+                  <button 
+                    className="approve-btn" 
+                    onClick={() => approveRequest(request.id)}
+                  >
+                    Approve
+                  </button>
+                  <button 
+                    className="reject-btn" 
+                    onClick={() => rejectRequest(request.id)}
+                  >
+                    Reject
+                  </button>
+                </div>
               </div>
-
-              <div>
-                <button onClick={() => approveRequest(request.id)}>
-                  Approve
-                </button>
-
-                <button onClick={() => rejectRequest(request.id)}>
-                  Reject
-                </button>
-              </div>
-            </div>
-          ))
+            ))}
+          </div>
         )}
       </div>
+      
       {loading ? (
         <div className="loading-box">Loading Firms...</div>
       ) : (
         <div className="admin-firm-list">
-          <div className="admin-firm-header">Registered Firms</div>
+          <div className="admin-firm-header">
+            <span>Registered Firms</span>
+            <span className="firm-count">{firms.length} {firms.length === 1 ? 'Firm' : 'Firms'}</span>
+          </div>
 
           {firms.length === 0 ? (
             <div
